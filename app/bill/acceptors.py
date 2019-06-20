@@ -5,10 +5,10 @@ GPIO.setmode(GPIO.BCM)
 import threading
 
 ITERA = 5
-PULSE_INPUT = 17
+PULSE_INPUT = 27
 FACTOR = 100
 
-class CoinAcceptor():
+class BillAcceptor():
 
     def __init__(self):
         self.pulses_counter = 0
@@ -16,14 +16,14 @@ class CoinAcceptor():
 
     def init(self):
         GPIO.setup(PULSE_INPUT, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        print('monederoo_ready!')
-        SOCKET_IO.emit('monedero_ready')
+        print('billetero_ready!')
+        SOCKET_IO.emit('billetero_ready')
 
     def start(self):
         self.init()
         x = threading.Thread(target=self.start_input)
         x.start()
-        print('Start monedero!')
+        print('Start billetero!')
                 
     def start_input(self):
         print('start_input!')
@@ -47,9 +47,9 @@ class CoinAcceptor():
 
     def sendCounter(self):
         print('COUNTER 1: '+ str(self.pulses_counter))
-        SOCKET_IO.emit('coin', {'coin': (self.pulses_counter*FACTOR) },  namespace='/')
+        SOCKET_IO.emit('bill', {'bill': (self.pulses_counter*FACTOR) },  namespace='/')
         self.pulses_counter = 0
         self.counter_control = 0 
     
     def stop(self):
-        print('Stop monedero')
+        print('Stop billetero')
